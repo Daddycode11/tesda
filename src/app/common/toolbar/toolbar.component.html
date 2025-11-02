@@ -1,0 +1,234 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark text-light">
+  <div class="container-fluid">
+    <img src="../../../assets/images/logo.png" height="40" alt="Logo" />
+    <div>
+      <h4>TESDA</h4>
+      <span>Occidental Mindoro</span>
+    </div>
+
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Collapsible nav links -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a
+            class="nav-link active"
+            aria-current="page"
+            [routerLink]="['/landing-page', 'home']"
+            >Home</a
+          >
+        </li>
+        <!-- about -->
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link dropdown-toggle"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            About us
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <a
+                [routerLink]="['/landing-page', 'history']"
+                class="dropdown-item"
+                >History</a
+              >
+            </li>
+            <li>
+              <a routerLink="/landing-page/structure" class="dropdown-item">
+                Organizational Structure (Provincial Office Staffs)
+              </a>
+            </li>
+            <li>
+              <a routerLink="/landing-page/mission" class="dropdown-item">
+                Mission, Vision, Value & Quality Statement
+              </a>
+            </li>
+            <li>
+              <a routerLink="/landing-page/careers" class="dropdown-item"
+                >Careers</a
+              >
+            </li>
+          </ul>
+        </li>
+        <!-- Programs and Services -->
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link dropdown-toggle"
+            href="#"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            Programs and Services
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">TVET Programs</a></li>
+            <li>
+              <a class="dropdown-item" href="#"
+                >Competency Standards Development</a
+              >
+            </li>
+
+            <li>
+              <a class="dropdown-item" href="#"
+                >Competency Assessment and Certification</a
+              >
+            </li>
+            <li>
+              <a class="dropdown-item">
+                Program Registration and Accreditation</a
+              >
+            </li>
+            <li>
+              <a class="dropdown-item">
+                Directory of Schools with Registered Programs</a
+              >
+            </li>
+            <li>
+              <a class="dropdown-item">
+                Directory of Accredited TVET Trainers</a
+              >
+            </li>
+            <li>
+              <a class="dropdown-item"> Training Regulations</a>
+            </li>
+            <li>
+              <a class="dropdown-item"> Competency Standards</a>
+            </li>
+          </ul>
+        </li>
+        <!-- Transparency -->
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link dropdown-toggle"
+            href="#"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+            >Transparency</a
+          >
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Action</a></li>
+            <li><a class="dropdown-item" href="#">Another action</a></li>
+            <li><hr class="dropdown-divider" /></li>
+            <li><a class="dropdown-item" href="#">Something else here</a></li>
+          </ul>
+        </li>
+        <!-- Contacts -->
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link dropdown-toggle"
+            href="#"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+            >Contacts</a
+          >
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Action</a></li>
+            <li><a class="dropdown-item" href="#">Another action</a></li>
+            <li><hr class="dropdown-divider" /></li>
+            <li><a class="dropdown-item" href="#">Something else here</a></li>
+          </ul>
+        </li>
+
+        <!-- Verification -->
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link dropdown-toggle"
+            href="#"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+            >Verification</a
+          >
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Action</a></li>
+            <li><a class="dropdown-item" href="#">Another action</a></li>
+            <li><hr class="dropdown-divider" /></li>
+            <li><a class="dropdown-item" href="#">Something else here</a></li>
+          </ul>
+        </li>
+      </ul>
+
+      @if (user == null) {
+      <div class="d-flex mt-2 mt-lg-0 gap-2" role="login">
+        <button
+          class="btn btn-outline-primary btn-lg"
+          (click)="registerClicked()"
+        >
+          Register
+        </button>
+        <button class="btn btn-primary btn-lg" (click)="loginClicked()">
+          Login
+        </button>
+      </div>
+      } @else {
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link dropdown-toggle d-flex align-items-center"
+            href="#"
+            id="userDropdown"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <img
+              [src]="user.profile || '../../../assets/images/profile.png'"
+              class="rounded-circle me-2"
+              alt="User Avatar"
+              width="50"
+              height="50"
+            />
+            <span>{{ user.name || "Account" }}</span>
+          </a>
+
+          <ul
+            class="dropdown-menu dropdown-menu-end"
+            aria-labelledby="userDropdown"
+          >
+            <li>
+              <a class="dropdown-item" (click)="navigate(user.type)">
+                Go to Dashboard
+              </a>
+            </li>
+            <li>
+              <a
+                class="dropdown-item d-flex align-items-center justify-content-between"
+              >
+                <span>Messages</span>
+                <span
+                  *ngIf="unseenMessagesCount > 0"
+                  class="badge bg-danger rounded-pill ms-2"
+                >
+                  {{ unseenMessagesCount }}
+                </span>
+              </a>
+            </li>
+
+            <li><hr class="dropdown-divider" /></li>
+            <li>
+              <button class="dropdown-item" (click)="logout()">Logout</button>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      }
+    </div>
+  </div>
+</nav>

@@ -1,0 +1,193 @@
+<section class="messenger container-fluid">
+  <div class="row h-100">
+    <!-- Left Column (Stories + Chats) -->
+    <div class="col-md-4 col-lg-3 left-panel p-0 border-end">
+      <div class="search-wrapper p-3 border-bottom">
+        <div class="d-flex align-items-center justify-content-between mb-3">
+          <h4>Chats</h4>
+          <button
+            class="btn btn-light"
+            type="button"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#userOffcanvas"
+            aria-controls="userOffcanvas"
+          >
+            <i class="bi bi-person-lines-fill"></i>
+          </button>
+        </div>
+
+        <div
+          class="search-bar d-flex align-items-center px-3 py-2 rounded-pill bg-light"
+        >
+          <i class="bi bi-search text-muted me-2"></i>
+          <input
+            type="text"
+            class="form-control border-0 bg-transparent shadow-none p-0"
+            placeholder="Search Messenger"
+          />
+        </div>
+      </div>
+
+      <!-- Chat List -->
+      <div class="chat-list">
+        <div
+          *ngFor="let chat of chatList | async"
+          class="chat-item d-flex align-items-center p-3 border-bottom hover-bg"
+          (click)="selectChat(chat)"
+        >
+          <img
+            [src]="
+              chat.user?.profile
+                ? chat.user?.profile
+                : 'assets/images/profile.png'
+            "
+            class="rounded-circle me-3"
+            width="48"
+            height="48"
+            [style.object-fit]="'cover'"
+            loading="lazy"
+            alt="profile"
+          />
+          <div>
+            <div class="fw-semibold">{{ chat.user?.name }}</div>
+
+            <small
+              [ngClass]="{
+                'fw-bold text-dark':
+                  chat.messages[0]?.senderId !== chat.me?.id &&
+                  !chat.messages[0]?.seen,
+                'text-muted':
+                  chat.messages[0]?.senderId === chat.me?.id ||
+                  chat.messages[0]?.seen
+              }"
+              class="text-truncate d-block"
+              style="max-width: 180px"
+            >
+              {{ chat.messages[0]?.message ?? "No message" }}
+            </small>
+            <small class="text-muted" style="font-size: x-small">
+              {{ chat.messages[0]?.createdAt | date : "short" }}
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column (Conversation) -->
+    <div class="col-md-8 col-lg-9 right-panel d-flex flex-column p-0">
+      <ng-container *ngIf="selectedChat$ | async as selectedChat; else noChat">
+        <div class="chat-box d-flex flex-column h-100">
+          <!-- Header -->
+          <div
+            class="card-header d-flex align-items-center p-3 bg-primary text-white"
+          >
+            <img
+              [src]="selectedChat.user?.profile || 'assets/images/profile.png'"
+              alt="{{ selectedChat.user?.name }}"
+              class="rounded-circle me-2"
+              width="40"
+              height="40"
+            />
+            <h6 class="m-0">{{ selectedChat.user?.name }}</h6>
+          </div>
+
+          <!-- Messages -->
+          <div
+            class="chat-messages flex-grow-1 p-3 overflow-auto d-flex flex-column-reverse"
+          >
+            <div *ngFor="let msg of selectedChat.messages">
+              <div
+                [ngClass]="{
+                  'text-end': msg.senderId === selectedChat.me?.id,
+                  'text-start': msg.senderId !== selectedChat.me?.id
+                }"
+                class="mb-2"
+              >
+                <span
+                  [ngClass]="{
+                    'bg-primary text-white':
+                      msg.senderId === selectedChat.me?.id,
+                    'bg-light': msg.senderId !== selectedChat.me?.id
+                  }"
+                  class="d-inline-block px-3 py-2 rounded message"
+                >
+                  {{ msg.message }}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Input -->
+          <div class="card-footer p-2 border-top">
+            <div class="input-group">
+              <input
+                type="text"
+                class="form-control"
+                [formControl]="messageText"
+                placeholder="Type a message..."
+              />
+              <button class="btn btn-primary" (click)="sendMessage()">
+                <i class="bi bi-send"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+
+      <ng-template #noChat>
+        <div
+          class="d-flex flex-column align-items-center justify-content-center h-100 text-muted"
+        >
+          <i class="bi bi-chat-dots fs-1 mb-2"></i>
+          <p>Select a chat to start messaging</p>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</section>
+
+<div
+  class="offcanvas offcanvas-end"
+  tabindex="-1"
+  id="userOffcanvas"
+  aria-labelledby="userOffcanvasLabel"
+>
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="userOffcanvasLabel">Users</h5>
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="offcanvas"
+      aria-label="Close"
+    ></button>
+  </div>
+  <div class="offcanvas-body">
+    <div
+      class="search-bar d-flex align-items-center px-3 py-2 rounded-pill bg-light mb-3"
+    >
+      <i class="bi bi-search text-muted me-2"></i>
+      <input
+        type="text"
+        class="form-control border-0 bg-transparent shadow-none p-0"
+        placeholder="Search Messenger"
+      />
+    </div>
+    <div
+      *ngFor="let item of conversation$ | async"
+      (click)="selectChat(item)"
+      class="d-flex align-items-center mb-3"
+    >
+      <img
+        [src]="item.user?.profile || 'assets/images/profile.png'"
+        alt="{{ item.user?.name }}"
+        class="rounded-circle me-2"
+        width="40"
+        height="40"
+      />
+      <div>
+        <div class="fw-semibold">{{ item.user?.name }}</div>
+        <small class="text-muted">{{ item.user?.email }}</small>
+      </div>
+    </div>
+  </div>
+</div>

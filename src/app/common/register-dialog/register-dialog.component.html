@@ -1,0 +1,174 @@
+<div class="modal-header">
+  <h4 class="modal-title">Register</h4>
+  <button
+    type="button"
+    class="btn-close"
+    aria-label="Close"
+    (click)="activeModal.dismiss('Cross click')"
+  ></button>
+</div>
+
+<div
+  *ngIf="loading$"
+  class="progress"
+  role="progressbar"
+  aria-label="Loading"
+  style="height: 3px"
+>
+  <div class="progress-bar progress-bar-animated" style="width: 100%"></div>
+</div>
+
+<div class="modal-body">
+  <form class="row g-3" [formGroup]="userForm" (submit)="submit()">
+    <!-- Name -->
+    <div class="form-floating col-12">
+      <input
+        type="text"
+        class="form-control"
+        id="name"
+        formControlName="name"
+        placeholder="Juan Dela Cruz"
+      />
+      <label for="name">Fullname</label>
+      <div
+        *ngIf="userForm.get('name')?.touched && userForm.get('name')?.invalid"
+        class="text-danger small"
+      >
+        <div *ngIf="userForm.get('name')?.errors?.['required']">
+          Name is required.
+        </div>
+        <div *ngIf="userForm.get('name')?.errors?.['minlength']">
+          Minimum 3 characters.
+        </div>
+        <div *ngIf="userForm.get('name')?.errors?.['maxlength']">
+          Maximum 59 characters.
+        </div>
+      </div>
+    </div>
+
+    <!-- Gender -->
+    <div class="form-floating col-6">
+      <select
+        class="form-select"
+        id="gender"
+        formControlName="gender"
+        aria-label="Select Gender"
+      >
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+      </select>
+      <label for="gender">Gender</label>
+      <div
+        *ngIf="
+          userForm.get('gender')?.touched && userForm.get('gender')?.invalid
+        "
+        class="text-danger small"
+      >
+        Gender is required.
+      </div>
+    </div>
+
+    <!-- Age -->
+    <div class="form-floating col-6">
+      <input
+        type="number"
+        class="form-control"
+        id="age"
+        formControlName="age"
+        placeholder="18"
+      />
+      <label for="age">Age</label>
+      <div
+        *ngIf="userForm.get('age')?.touched && userForm.get('age')?.invalid"
+        class="text-danger small"
+      >
+        Age is required.
+      </div>
+    </div>
+
+    <!-- Email -->
+    <div class="form-floating col-12">
+      <input
+        type="email"
+        class="form-control"
+        id="email"
+        formControlName="email"
+        placeholder="name@example.com"
+      />
+      <label for="email">Email address</label>
+      <div
+        *ngIf="userForm.get('email')?.touched && userForm.get('email')?.invalid"
+        class="text-danger small"
+      >
+        <div *ngIf="userForm.get('email')?.errors?.['required']">
+          Email is required.
+        </div>
+        <div *ngIf="userForm.get('email')?.errors?.['email']">
+          Invalid email format.
+        </div>
+      </div>
+    </div>
+
+    <!-- Password -->
+    <div class="form-floating col-12">
+      <input
+        type="password"
+        class="form-control"
+        id="password"
+        formControlName="password"
+        placeholder="Password"
+      />
+      <label for="password">Password</label>
+      <div
+        *ngIf="
+          userForm.get('password')?.touched && userForm.get('password')?.invalid
+        "
+        class="text-danger small"
+      >
+        <div *ngIf="userForm.get('password')?.errors?.['required']">
+          Password is required.
+        </div>
+        <div *ngIf="userForm.get('password')?.errors?.['minlength']">
+          Minimum 8 characters.
+        </div>
+      </div>
+    </div>
+
+    <!-- Confirm Password -->
+    <div class="form-floating col-12">
+      <input
+        type="password"
+        class="form-control"
+        id="confirmPassword"
+        formControlName="confirmPassword"
+        placeholder="Confirm Password"
+      />
+      <label for="confirmPassword">Confirm Password</label>
+      <div
+        *ngIf="userForm.get('confirmPassword')?.touched && userForm.errors?.['passwordMismatch']"
+        class="text-danger small"
+      >
+        Passwords do not match.
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="modal-footer">
+      <button
+        class="btn btn-primary btn-lg col-12"
+        type="submit"
+        [disabled]="loading$ || userForm.invalid"
+      >
+        Register
+      </button>
+      <button
+        [disabled]="loading$"
+        class="btn btn-outline-secondary btn-lg col-12"
+        type="button"
+        (click)="registerWithGoogle()"
+      >
+        Continue with Google
+      </button>
+    </div>
+  </form>
+</div>

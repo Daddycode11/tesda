@@ -1,0 +1,22 @@
+<div class="container py-4">
+  <h4 class="mb-3">Services</h4>
+
+  <div *ngIf="services$ | async as services">
+    <div *ngIf="services.length; else empty">
+      <div class="row g-3">
+        <div class="col-md-4" *ngFor="let service of services">
+          <div class="card h-100 shadow-sm">
+            <div class="card-body">
+              <h5 class="card-title">{{ service.title }}</h5>
+              <p class="card-text">{{ service.description }}</p>
+              <span class="badge bg-secondary">{{ service.type }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <ng-template #empty>
+      <div class="alert alert-info">No services found for this type.</div>
+    </ng-template>
+  </div>
+</div>

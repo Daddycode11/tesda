@@ -1,0 +1,75 @@
+<div class="container-fluid py-4">
+  <div class="card shadow-sm border-0">
+    <div
+      class="card-header bg-primary text-white d-flex justify-content-between align-items-center"
+    >
+      <h5 class="mb-0">Manage Banners</h5>
+      <div class="upload-btn-wrapper">
+        <input
+          type="file"
+          id="bannerFile"
+          #fileInput
+          class="form-control d-none"
+          (change)="onFileSelected($event)"
+          accept="image/*"
+        />
+        <button
+          class="btn btn-light btn-sm text-primary fw-semibold"
+          (click)="fileInput.click()"
+        >
+          <i class="bi bi-upload me-1"></i> Choose File
+        </button>
+        <button
+          class="btn btn-success btn-sm ms-2"
+          [disabled]="isUploading || !selectedFile"
+          (click)="create()"
+        >
+          <i class="bi bi-cloud-arrow-up me-1"></i> Upload
+        </button>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <div *ngIf="isUploading" class="alert alert-info text-center">
+        <div class="spinner-border spinner-border-sm me-2"></div>
+        Uploading banner... Please wait.
+      </div>
+
+      <div class="row g-3">
+        <div
+          *ngFor="let banner of banners"
+          class="col-12 col-sm-6 col-md-4 col-lg-3"
+        >
+          <div class="card h-100 shadow-sm banner-card border-0">
+            <div class="ratio ratio-1x1">
+              <img
+                [src]="banner.url"
+                class="card-img-top img-fluid rounded"
+                alt="Banner Image"
+              />
+            </div>
+            <div class="card-body text-center">
+              <small class="text-muted d-block mb-2">
+                {{ banner.createdAt | date : "medium" }}
+              </small>
+              <button
+                class="btn btn-outline-danger btn-sm w-100"
+                (click)="deleteBanner(banner.url)"
+              >
+                <i class="bi bi-trash3 me-1"></i> Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        *ngIf="banners.length === 0 && !isUploading"
+        class="text-center text-muted mt-4"
+      >
+        <i class="bi bi-image text-secondary" style="font-size: 3rem"></i>
+        <p class="mt-2">No banners uploaded yet.</p>
+      </div>
+    </div>
+  </div>
+</div>

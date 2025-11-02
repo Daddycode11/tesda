@@ -1,0 +1,77 @@
+<section class="py-5 bg-light">
+  <div class="container">
+    <div class="text-center mb-5">
+      <h2
+        class="fw-bold"
+        style="font-size: 2.5rem; letter-spacing: -0.5px; line-height: 1.2"
+      >
+        <span
+          class="d-inline-block"
+          style="
+            background: linear-gradient(to right, #0d6efd, #198754, #ffc107);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+          "
+        >
+          Activities
+        </span>
+      </h2>
+    </div>
+
+    <div class="calendar-wrapper">
+      <full-calendar [options]="calendarOptions"></full-calendar>
+    </div>
+  </div>
+</section>
+
+<!-- Offcanvas for Activity Details -->
+<div
+  class="offcanvas offcanvas-end"
+  tabindex="-1"
+  id="activityDetails"
+  aria-labelledby="activityDetailsLabel"
+>
+  <div class="offcanvas-header border-bottom">
+    <h5 class="offcanvas-title fw-semibold" id="activityDetailsLabel">
+      {{ selectedActivity?.title }}
+    </h5>
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="offcanvas"
+      aria-label="Close"
+    ></button>
+  </div>
+
+  <div class="offcanvas-body">
+    <img
+      *ngIf="selectedActivity?.image"
+      [src]="selectedActivity?.image"
+      alt="Activity image"
+      class="img-fluid rounded mb-3"
+    />
+
+    <ul class="list-unstyled mb-4">
+      <li class="mb-2">
+        <strong>Date:</strong>
+        {{ selectedActivity?.sortableDate | date : "fullDate" }}
+      </li>
+      <li class="mb-2">
+        <strong>Time:</strong>
+        {{ formatTime(selectedActivity?.time) }}
+      </li>
+      <li class="mb-2">
+        <strong>Location:</strong>
+        {{ selectedActivity?.location }}
+      </li>
+      <li>
+        <strong>Description:</strong>
+        <div class="text-muted mt-1">
+          {{ selectedActivity?.description }}
+        </div>
+      </li>
+    </ul>
+
+    <button class="btn btn-primary w-100">Register Now</button>
+  </div>
+</div>

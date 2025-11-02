@@ -1,0 +1,168 @@
+<div class="modal-header border-0 pb-0">
+  <h5 class="modal-title fw-semibold">
+    {{ activity ? "Update Activity" : "Create Activity" }}
+  </h5>
+  <button
+    type="button"
+    class="btn-close"
+    aria-label="Close"
+    (click)="onCancel()"
+  ></button>
+</div>
+
+<form
+  [formGroup]="activityForm"
+  (ngSubmit)="onSubmit()"
+  class="needs-validation"
+  novalidate
+>
+  <div class="modal-body">
+    <div class="row g-4">
+      <!-- Title -->
+      <div class="col-12">
+        <div class="form-floating">
+          <input
+            type="text"
+            id="title"
+            class="form-control"
+            placeholder="Title"
+            formControlName="title"
+            [class.is-invalid]="
+              activityForm.get('title')?.invalid &&
+              activityForm.get('title')?.touched
+            "
+          />
+          <label for="title">Title</label>
+          <div class="invalid-feedback">
+            Title is required and must be under 100 characters.
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12">
+        <div class="form-floating">
+          <input
+            type="text"
+            id="location"
+            class="form-control"
+            placeholder="Location"
+            formControlName="location"
+            [class.is-invalid]="
+              activityForm.get('location')?.invalid &&
+              activityForm.get('location')?.touched
+            "
+          />
+          <label for="location">Location</label>
+          <div class="invalid-feedback">Location is required</div>
+        </div>
+      </div>
+
+      <!-- Image Upload -->
+      <div class="col-12">
+        <label for="image" class="form-label fw-semibold">Upload Image</label>
+        <input
+          type="file"
+          accept="image/*"
+          id="image"
+          class="form-control"
+          (change)="onSelectedImage($event)"
+          [class.is-invalid]="
+            activityForm.get('image')?.invalid &&
+            activityForm.get('image')?.touched
+          "
+        />
+        <div class="invalid-feedback">Image is required.</div>
+      </div>
+
+      <!-- Description -->
+      <div class="col-12">
+        <div class="form-floating">
+          <textarea
+            id="description"
+            class="form-control"
+            placeholder="Description"
+            formControlName="description"
+            style="height: 120px"
+            [class.is-invalid]="
+              activityForm.get('description')?.invalid &&
+              activityForm.get('description')?.touched
+            "
+          ></textarea>
+          <label for="description">Description</label>
+          <div class="invalid-feedback">Description is required.</div>
+        </div>
+      </div>
+
+      <!-- Date Picker -->
+      <div class="col-md-6">
+        <label for="date" class="form-label fw-semibold">Date</label>
+        <div class="input-group">
+          <input
+            class="form-control"
+            id="date"
+            placeholder="Select date"
+            formControlName="date"
+            ngbDatepicker
+            #d="ngbDatepicker"
+            [class.is-invalid]="
+              activityForm.get('date')?.invalid &&
+              activityForm.get('date')?.touched
+            "
+          />
+          <button
+            class="btn btn-outline-secondary"
+            type="button"
+            (click)="d.toggle()"
+          >
+            <i class="bi bi-calendar3"></i>
+          </button>
+          <div class="invalid-feedback d-block">Date is required.</div>
+        </div>
+      </div>
+
+      <!-- Time Picker -->
+      <div class="col-md-6">
+        <label class="form-label fw-semibold">Time</label>
+        <div
+          [class.border-danger]="
+            activityForm.get('time')?.invalid &&
+            activityForm.get('time')?.touched
+          "
+        >
+          <ngb-timepicker
+            formControlName="time"
+            [spinners]="true"
+            [seconds]="false"
+            [meridian]="true"
+          ></ngb-timepicker>
+        </div>
+        <div
+          *ngIf="
+            activityForm.get('time')?.invalid &&
+            activityForm.get('time')?.touched
+          "
+          class="text-danger small mt-1"
+        >
+          Time is required.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-footer border-0 pt-0">
+    <button
+      type="button"
+      class="btn btn-outline-secondary"
+      (click)="onCancel()"
+    >
+      Cancel
+    </button>
+    <button
+      type="submit"
+      class="btn btn-primary px-4"
+      [disabled]="activityForm.invalid"
+    >
+      {{ activity ? "Update" : "Create" }}
+    </button>
+  </div>
+</form>

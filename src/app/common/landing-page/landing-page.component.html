@@ -1,0 +1,20 @@
+<app-toolbar
+  (onRegister)="register()"
+  [user]="user$ | async"
+  (onLogin)="login()"
+  (onLogout)="logout()"
+  [messages]="(unseenMessages$ | async) || []"
+  (onNavigateToDashboard)="navigateToDashboard($event)"
+></app-toolbar>
+
+<div
+  *ngIf="loading$"
+  class="progress"
+  role="progressbar"
+  aria-label="Loading"
+  style="height: 8px"
+>
+  <div class="progress-bar progress-bar-animated" style="width: 100%"></div>
+</div>
+
+<router-outlet></router-outlet>

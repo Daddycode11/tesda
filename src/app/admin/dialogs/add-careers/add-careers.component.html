@@ -1,0 +1,79 @@
+<div class="modal-header">
+  <h4 class="modal-title">
+    @if(career !== null) { Update} @else { Create } Career
+  </h4>
+  <button
+    type="button"
+    class="btn-close"
+    aria-label="Close"
+    (click)="activeDialog.dismiss('Cross click')"
+  ></button>
+</div>
+
+<div class="modal-body">
+  <form (submit)="submit()" [formGroup]="careerForm">
+    <div class="form-floating mb-3">
+      <input
+        type="text"
+        class="form-control"
+        id="title"
+        formControlName="title"
+        placeholder="Enter title"
+      />
+      <label for="title">Title</label>
+      <div
+        *ngIf="
+          careerForm.get('title')?.invalid && careerForm.get('title')?.touched
+        "
+        class="text-danger small mt-1"
+      >
+        Title is required.
+      </div>
+    </div>
+
+    <div class="form-floating mb-3">
+      <textarea
+        class="form-control"
+        placeholder="Add a short description"
+        id="description"
+        formControlName="description"
+        style="height: 100px"
+      ></textarea>
+      <label for="description">Description</label>
+
+      <div
+        *ngIf="
+          careerForm.get('description')?.invalid &&
+          careerForm.get('description')?.touched
+        "
+        class="text-danger small mt-1"
+      >
+        Description is required.
+      </div>
+    </div>
+
+    <div class="form-floating mb-3">
+      <input
+        type="file"
+        class="form-control"
+        id="image"
+        (change)="onImageSelected($event)"
+        accept="image/*"
+      />
+      <label for="image" class="form-label">Upload Image</label>
+    </div>
+
+    <button
+      class="btn btn-primary w-100"
+      type="submit"
+      [disabled]="isLoading || careerForm.invalid"
+    >
+      <ng-container *ngIf="isLoading; else saveText">
+        <div class="spinner-border spinner-border-sm" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </ng-container>
+      <ng-template #saveText>Save</ng-template>
+    </button>
+  </form>
+</div>
