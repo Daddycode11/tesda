@@ -24,7 +24,7 @@ export class AnnouncementComponent implements OnInit {
     this.announcements$ = this.activatedRoute.queryParams.pipe(
       switchMap((params) => {
         const type = params['type'] || null;
-        return this.announcementService.getAll(type);
+        return this.announcementService.getAllByType(type);
       })
     );
   }

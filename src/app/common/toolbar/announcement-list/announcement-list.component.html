@@ -42,7 +42,10 @@
             <p class="card-text text-truncate" style="max-height: 3.6em">
               {{ item.summary }}
             </p>
-            <a class="btn btn-link ms-auto mt-auto" [routerLink]="item.source">
+            <a
+              class="btn btn-link ms-auto mt-auto"
+              [routerLink]="['/landing-page/announcements', item.id]"
+            >
               Read More
             </a>
           </div>
@@ -51,7 +54,12 @@
     </div>
 
     <div class="text-center mt-4">
-      <button class="btn btn-outline-primary px-4 py-2">See more</button>
+      <button
+        class="btn btn-outline-primary px-4 py-2"
+        [routerLink]="['/landing-page/announcements']"
+      >
+        See more
+      </button>
     </div>
   </div>
 </section>

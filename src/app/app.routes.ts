@@ -23,6 +23,11 @@ import { CreateAnnouncementComponent } from './admin/create-announcement/create-
 import { AnnouncementComponent } from './admin/announcement/announcement.component';
 import { NewsComponent } from './admin/news/news.component';
 import { AdminActivitiesComponent } from './admin/admin-activities/admin-activities.component';
+import { UserDashboardComponent } from './user/user-dashboard/user-dashboard.component';
+import { UserMessagesComponent } from './user/user-messages/user-messages.component';
+import { ServicesListComponent } from './common/services-list/services-list.component';
+import { AnnounementListComponent } from './common/announement-list/announement-list.component';
+import { ViewAnnouncementComponent } from './common/view-announcement/view-announcement.component';
 
 export const routes: Routes = [
   {
@@ -30,6 +35,7 @@ export const routes: Routes = [
     redirectTo: '/landing-page',
     pathMatch: 'full',
   },
+
   {
     path: 'landing-page',
     component: LandingPageComponent,
@@ -38,6 +44,20 @@ export const routes: Routes = [
         path: '',
         component: HomeComponent,
       },
+      {
+        path: 'services',
+        component: ServicesListComponent,
+      },
+      {
+        path: 'announcements',
+        component: AnnounementListComponent,
+      },
+
+      {
+        path: 'announcements/:id',
+        component: ViewAnnouncementComponent,
+      },
+
       {
         path: 'home',
         component: HomeComponent,
@@ -61,9 +81,23 @@ export const routes: Routes = [
     ],
   },
   {
-    path: 'main/:id',
+    path: 'main',
     component: MainComponent,
     canActivate: [authGuard],
+    children: [
+      {
+        path: '',
+        component: UserDashboardComponent,
+      },
+      {
+        path: 'dashboard',
+        component: UserDashboardComponent,
+      },
+      {
+        path: 'messages',
+        component: UserMessagesComponent,
+      },
+    ],
   },
   {
     path: 'administration',
