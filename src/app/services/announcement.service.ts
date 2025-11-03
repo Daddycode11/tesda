@@ -6,6 +6,7 @@ import {
   collectionData,
   doc,
   Firestore,
+  getDoc,
   limit,
   orderBy,
   query,
@@ -57,12 +58,22 @@ export class AnnouncementService {
       throw error;
     }
   }
-  getAll(type: Announcement['type']): Observable<Announcement[]> {
+  getAllByType(type: Announcement['type']): Observable<Announcement[]> {
     const q = query(
       collection(this.firestore, this.ANNOUNCEMENT_COLLECTION).withConverter(
         AnnouncementConverter
       ),
       where('type', '==', type),
+      orderBy('updatedAt', 'desc')
+    );
+    return collectionData(q);
+  }
+  getAll(): Observable<Announcement[]> {
+    const q = query(
+      collection(this.firestore, this.ANNOUNCEMENT_COLLECTION).withConverter(
+        AnnouncementConverter
+      ),
+
       orderBy('updatedAt', 'desc')
     );
     return collectionData(q);
@@ -77,5 +88,12 @@ export class AnnouncementService {
       limit(3)
     );
     return collectionData(q);
+  }
+  getById(id: string) {
+    return getDoc(
+      doc(this.firestore, this.ANNOUNCEMENT_COLLECTION, id).withConverter(
+        AnnouncementConverter
+      )
+    );
   }
 }

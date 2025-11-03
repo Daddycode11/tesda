@@ -79,6 +79,16 @@ export class ProgramsService {
     );
     return collectionData(q);
   }
+  getAll(): Observable<Services[]> {
+    const q = query(
+      collection(this.firestore, this.SERVICES_COLLECTION).withConverter(
+        ServicesConverter
+      ),
+
+      orderBy('updatedAt', 'desc')
+    );
+    return collectionData(q);
+  }
   async update(service: Services, icon: File | null): Promise<void> {
     const docRef = doc(this.firestore, this.SERVICES_COLLECTION, service.id);
 
