@@ -10,8 +10,7 @@ import {
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from '../../services/auth.service';
 import { UserType } from '../../models/Users';
-import { ToastrService } from '../../services/toastr.service';
-import { dA } from '@fullcalendar/core/internal-common';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-login-dialog',
@@ -25,11 +24,7 @@ export class LoginDialogComponent {
   loginForm: FormGroup;
   loading$ = false;
 
-  constructor(
-    private fb: FormBuilder,
-    private authService: AuthService,
-    private toastr: ToastrService
-  ) {
+  constructor(private fb: FormBuilder, private authService: AuthService) {
     this.loginForm = fb.nonNullable.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
@@ -38,6 +33,12 @@ export class LoginDialogComponent {
 
   submit() {
     if (this.loginForm.invalid) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Invalid Input',
+        text: 'Please fill out all required fields correctly.',
+        confirmButtonColor: '#3085d6',
+      });
       return;
     }
 
@@ -51,20 +52,19 @@ export class LoginDialogComponent {
 
         if (data.type === UserType.ADMIN) {
           this.authService.logout();
-          this.toastr.showError('Admin cannot log in here');
-          this.activeModal.close(null);
+          this.toastr.showError('Admin Cannot Logged in here');
         } else {
-          this.toastr.showSuccess('Successfully logged in!');
-          this.activeModal.close(data.id); // ✅ return user ID
+          this.toastr.showSuccess('Successfully Logged in!');
+
+          this.activeModal.close(false);
         }
       })
       .catch((e) => {
-        this.toastr.showError(e['message'] ?? 'Unknown error');
-        this.activeModal.close(null); // ❌ login failed
+        this.toastr.showError(e['message'] ?? 'Unknown Error');
+        this.activeModal.close(false);
         this.loading$ = false;
       });
   }
-
   loginWithGoogle() {
     this.loading$ = true;
 
@@ -74,17 +74,15 @@ export class LoginDialogComponent {
         this.loading$ = false;
 
         if (data.type === UserType.ADMIN) {
-          this.authService.logout();
-          this.toastr.showError('Admin cannot log in here');
-          this.activeModal.close(null);
+          this.activeModal.close(true);
         } else {
-          this.toastr.showSuccess('Successfully logged in!');
-          this.activeModal.close(data.id); // ✅ return user ID
+          false;
         }
+        this.activeModal.close(false);
       })
       .catch((e) => {
-        this.toastr.showError(e['message'] ?? 'Unknown error');
-        this.activeModal.close(null); // ❌ login failed
+        this.toastr.showError(e['message'] ?? 'Unknown Error');
+        this.activeModal.close(false);
         this.loading$ = false;
       });
   }
