@@ -9,6 +9,9 @@ import { User } from './models/Users';
 import { Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
+import { FeedbackDialogComponent } from './common/feedback-dialog/feedback-dialog.component';
+import { FeedbackService } from './services/feedback.service';
+import { dA } from '@fullcalendar/core/internal-common';
 
 @Component({
   selector: 'app-root',
@@ -17,6 +20,9 @@ import { RouterOutlet } from '@angular/router';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'tesda';
+
+  constructor(private modalService: NgbModal, private auth: AuthService) {}
+  ngOnInit(): void {}
 }

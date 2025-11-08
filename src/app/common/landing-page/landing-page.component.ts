@@ -21,6 +21,8 @@ import {
   UnSeenMessages,
 } from '../../services/messaging.service';
 import { Message } from '../../models/Message';
+import { FeedbackDialogComponent } from '../feedback-dialog/feedback-dialog.component';
+import { FeedbackService } from '../../services/feedback.service';
 
 @Component({
   selector: 'app-landing-page',
@@ -36,7 +38,7 @@ export class LandingPageComponent {
   private router = inject(Router);
   private authService = inject(AuthService);
   private messageService = inject(MessagingService);
-
+  private feedbackService = inject(FeedbackService);
   loading$ = false;
 
   readonly user$ = this.authService.getCurrentUser();
@@ -55,7 +57,16 @@ export class LandingPageComponent {
   }
   login() {
     const modalRef = this.modalService.open(LoginDialogComponent);
+    modalRef.result.then(async (uid) => {
+      if (uid) {
+        const shouldPrompt = !(await this.feedbackService.hasFeedback(uid));
+        if (shouldPrompt) {
+          this.openFeedbackDialog();
+        }
+      }
+    });
   }
+
   logout() {
     this.loading$ = true;
     this.authService
@@ -69,5 +80,9 @@ export class LandingPageComponent {
     } else {
       this.router.navigate(['/main']);
     }
+  }
+
+  openFeedbackDialog() {
+    this.modalService.open(FeedbackDialogComponent, { size: 'lg' });
   }
 }

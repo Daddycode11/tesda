@@ -11,6 +11,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from '../../services/auth.service';
 import { UserType } from '../../models/Users';
 import { ToastrService } from '../../services/toastr.service';
+import { dA } from '@fullcalendar/core/internal-common';
 
 @Component({
   selector: 'app-login-dialog',
@@ -39,8 +40,10 @@ export class LoginDialogComponent {
     if (this.loginForm.invalid) {
       return;
     }
+
     const { email, password } = this.loginForm.value;
     this.loading$ = true;
+
     this.authService
       .loginWithEmailAndPassword(email, password)
       .then((data) => {
@@ -48,36 +51,40 @@ export class LoginDialogComponent {
 
         if (data.type === UserType.ADMIN) {
           this.authService.logout();
-          this.toastr.showError('Admin Cannot Logged in here');
+          this.toastr.showError('Admin cannot log in here');
+          this.activeModal.close(null);
         } else {
-          this.toastr.showSuccess('Successfully Logged in!');
-
-          this.activeModal.close(false);
+          this.toastr.showSuccess('Successfully logged in!');
+          this.activeModal.close(data.id); // ✅ return user ID
         }
       })
       .catch((e) => {
-        this.toastr.showError(e['message'] ?? 'Unknown Error');
-        this.activeModal.close(false);
+        this.toastr.showError(e['message'] ?? 'Unknown error');
+        this.activeModal.close(null); // ❌ login failed
         this.loading$ = false;
       });
   }
+
   loginWithGoogle() {
     this.loading$ = true;
+
     this.authService
       .loginWithGoogle()
       .then((data) => {
-        this.toastr.showSuccess('Successfully Logged In');
         this.loading$ = false;
+
         if (data.type === UserType.ADMIN) {
-          this.activeModal.close(true);
+          this.authService.logout();
+          this.toastr.showError('Admin cannot log in here');
+          this.activeModal.close(null);
         } else {
-          false;
+          this.toastr.showSuccess('Successfully logged in!');
+          this.activeModal.close(data.id); // ✅ return user ID
         }
-        this.activeModal.close(false);
       })
       .catch((e) => {
-        this.toastr.showError(e['message'] ?? 'Unknown Error');
-        this.activeModal.close(false);
+        this.toastr.showError(e['message'] ?? 'Unknown error');
+        this.activeModal.close(null); // ❌ login failed
         this.loading$ = false;
       });
   }
