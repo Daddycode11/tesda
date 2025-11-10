@@ -1,50 +1,154 @@
-<section class="py-5">
+<section class="py-5 programs-services-section">
   <div class="container text-center">
-    <h2
-      class="fw-bold mb-5"
-      style="font-size: 2.5rem; letter-spacing: -0.5px; line-height: 1.2"
-    >
-      <span
-        style="
-          background: linear-gradient(to right, #0d6efd, #198754, #ffc107);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          display: inline-block;
-        "
-      >
-        Programs &amp; Services
-      </span>
+    <h2 class="section-title mb-5">
+      <span>Programs &amp; Services</span>
     </h2>
 
-    <div class="row g-4 justify-content-center">
-      <div
-        class="col-md-4"
-        *ngFor="let item of services$ | async; let i = index"
-        [ngClass]="{
-          'animate-delay-0': i === 0,
-          'animate-delay-1': i === 1,
-          'animate-delay-2': i === 2
-        }"
+    <!-- Filters -->
+    <div class="filters d-flex flex-wrap gap-3 justify-content-center mb-4">
+      <select
+        class="form-select filter-select"
+        [(ngModel)]="type"
+        (ngModelChange)="refreshServices(); updateQueryParams()"
       >
-        <div
-          class="card border-0 shadow-sm p-4 text-center rounded-4 program-card"
-        >
-          <div
-            class="icon-circle mx-auto mb-3 d-flex align-items-center justify-content-center bounce"
-            [ngStyle]="{ 'background-color': item.icon }"
+        <option *ngFor="let t of type$" [value]="t">{{ t }}</option>
+      </select>
+
+      <input
+        type="text"
+        class="form-control filter-input"
+        placeholder="Search services..."
+        [(ngModel)]="search"
+        (ngModelChange)="refreshServices(); updateQueryParams()"
+      />
+
+      <select
+        class="form-select filter-select"
+        [(ngModel)]="pageSize"
+        (ngModelChange)="refreshServices(); updateQueryParams()"
+      >
+        <option [ngValue]="5">5</option>
+        <option [ngValue]="10">10</option>
+        <option [ngValue]="25">25</option>
+      </select>
+    </div>
+
+    <!-- Services Table -->
+    <div class="table-responsive shadow-sm rounded-3">
+      <table class="table table-hover table-striped align-middle mb-0">
+        <thead class="table-dark">
+          <tr>
+            <th>#</th>
+            <th>Title</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Last Updated</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let service of services; let i = index"
+            (click)="openOffcanvas(offcanvasContent, service)"
+            style="cursor: pointer"
           >
-            <img
-              [src]="item.icon || 'https://placehold.co/600x400/EEE/31343C'"
-              width="80px"
-              height="80px"
-              class="rounded-circle"
-              style="object-fit: cover"
-            />
-          </div>
-          <h5 class="fw-semibold mb-2">{{ item.title }}</h5>
-          <p class="text-muted mb-0">{{ item.description }}</p>
+            <td>{{ i + 1 }}</td>
+            <td>{{ service.title }}</td>
+            <td>{{ service.type }}</td>
+            <td>{{ service.description }}</td>
+            <td>{{ service.updatedAt | date : "short" }}</td>
+          </tr>
+          <tr *ngIf="services.length === 0 && !isLoading">
+            <td colspan="5" class="text-center py-3">No services found.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination Controls -->
+    <div
+      class="d-flex justify-content-between align-items-center mt-4 flex-wrap gap-2"
+    >
+      <ngb-pagination
+        [collectionSize]="collectionSize"
+        [(page)]="page"
+        [pageSize]="pageSize"
+        (pageChange)="onPageChange($event)"
+        class="mb-2 mb-md-0"
+      ></ngb-pagination>
+
+      <button
+        class="btn btn-primary d-flex align-items-center gap-2"
+        (click)="loadNext()"
+        [disabled]="isLoading || noMoreData"
+      >
+        <span *ngIf="isLoading" class="spinner-border spinner-border-sm"></span>
+        Load More
+      </button>
+    </div>
+  </div>
+
+  <!-- Offcanvas Template -->
+
+  <ng-template #offcanvasContent let-offcanvas>
+    <div
+      class="offcanvas offcanvas-end show shadow-lg"
+      tabindex="-1"
+      style="visibility: visible; width: 400px"
+    >
+      <div class="offcanvas-header border-bottom">
+        <h5 class="offcanvas-title fw-bold" id="offcanvas-basic-title">
+          {{ selectedService?.title }}
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          aria-label="Close"
+          (click)="offcanvas.dismiss('Cross click')"
+        ></button>
+      </div>
+
+      <div class="offcanvas-body p-4">
+        <!-- Type Badge -->
+        <span class="badge bg-primary mb-3">{{ selectedService?.type }}</span>
+
+        <!-- Description -->
+        <p class="text-muted mb-3">{{ selectedService?.description }}</p>
+
+        <!-- Requirements -->
+        <div *ngIf="selectedService?.requirements?.length">
+          <h6 class="fw-semibold">Requirements:</h6>
+          <ul class="mb-3">
+            <li *ngFor="let req of selectedService?.requirements">{{ req }}</li>
+          </ul>
+        </div>
+
+        <!-- Dates -->
+        <div class="mb-4">
+          <p class="mb-1">
+            <strong>Created At:</strong>
+            {{ selectedService?.createdAt | date : "medium" }}
+          </p>
+          <p>
+            <strong>Updated At:</strong>
+            {{ selectedService?.updatedAt | date : "medium" }}
+          </p>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="d-flex gap-2 flex-wrap">
+          <button
+            class="btn btn-success flex-grow-1"
+            [disabled]="!selectedService?.file"
+            (click)="downloadFile(selectedService?.file ?? null)"
+          >
+            <i class="bi bi-download me-1"></i> Download Files
+          </button>
+
+          <button class="btn btn-primary flex-grow-1">
+            <i class="bi bi-calendar-check me-1"></i> Book Appointment
+          </button>
         </div>
       </div>
     </div>
-  </div>
+  </ng-template>
 </section>

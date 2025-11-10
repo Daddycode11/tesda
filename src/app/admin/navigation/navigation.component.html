@@ -1,13 +1,13 @@
-
-<div class="d-flex flex-column flex-md-row" style="min-height: 100vh; overflow: hidden; font-family: 'Poppins', sans-serif;">
+<div class="layout">
   <!-- Sidebar -->
-  <aside
-    class="sidebar bg-white border-end p-3 d-flex flex-column shadow-sm"
-    id="sidebarMenu"
-  >
+  <aside class="sidebar p-3" id="sidebarMenu">
     <!-- Branding -->
-    <img src="../../../assets/images/logo.png" width="100px" height="100px" />
-
+    <img
+      src="../../../assets/images/logo.png"
+      width="100px"
+      height="100px"
+      alt="Logo"
+    />
     <hr />
 
     <!-- Navigation -->
@@ -44,6 +44,7 @@
                 <li *ngFor="let sub of item.more">
                   <a
                     [routerLink]="sub.route"
+                    [queryParams]="sub.queryParams"
                     routerLinkActive="active-link-sub"
                     class="nav-link text-muted d-block py-1 ps-2 hover-link-sub"
                   >
@@ -57,7 +58,6 @@
       </ul>
     </nav>
 
-    <!-- Divider -->
     <hr />
 
     <!-- User dropdown -->
@@ -86,7 +86,7 @@
   </aside>
 
   <!-- Main content -->
-  <main class="flex-grow-1 bg-light p-3" style="overflow-y: auto;">
+  <main class="main-content">
     <router-outlet></router-outlet>
   </main>
 </div>

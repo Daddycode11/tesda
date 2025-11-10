@@ -11,7 +11,7 @@ import {
 } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from '../../services/auth.service';
-import Swal from 'sweetalert2'; 
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-register-dialog',
@@ -46,7 +46,6 @@ export class RegisterDialogComponent {
     );
   }
 
-  
   submit() {
     if (this.userForm.invalid) {
       Swal.fire({

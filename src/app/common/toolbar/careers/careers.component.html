@@ -8,56 +8,41 @@
   </span>
 </div>
 
-<div class="container-fluid p-3 careers-grid">
-  @for (item of careers$ | async; track $index) {
-  <div
-    class="career-item"
-    (click)="openOffcanvas(item)"
-    data-bs-toggle="offcanvas"
-    data-bs-target="#careerOffcanvas"
-  >
-    <img
-      [src]="item.image"
-      [alt]="item.title"
-      width="80"
-      height="80"
-      class="rounded"
-    />
-    <div class="career-text">
-      <h4 class="career-title">{{ item.title }}</h4>
-      <span class="career-desc">{{ item.description }}</span>
+<div class="container py-4">
+  <div ngbAccordion #accordion="ngbAccordion" activeIds="career-0">
+    <div
+      *ngFor="let item of careers$ | async; let i = index"
+      [ngbAccordionItem]="'career-' + i"
+    >
+      <h2 ngbAccordionHeader>
+        <button ngbAccordionButton class="d-flex align-items-center gap-3">
+          <img
+            [src]="item.image"
+            [alt]="item.title"
+            width="60"
+            height="60"
+            class="rounded"
+          />
+          <span class="fw-semibold">{{ item.title }}</span>
+        </button>
+      </h2>
+      <div ngbAccordionCollapse>
+        <div ngbAccordionBody>
+          <ng-template>
+            <div class="text-center">
+              <img
+                [src]="item.image"
+                [alt]="item.title"
+                class="img-fluid rounded mb-3"
+                style="max-height: 200px; object-fit: cover; width: 100%"
+              />
+              <p class="fs-6 text-secondary mb-0">{{ item.description }}</p>
+            </div>
+          </ng-template>
+        </div>
+      </div>
     </div>
   </div>
-  }
-</div>
 
-<!-- ✅ Offcanvas Component -->
-<div
-  class="offcanvas offcanvas-end"
-  tabindex="-1"
-  id="careerOffcanvas"
-  aria-labelledby="careerOffcanvasLabel"
->
-  <div class="offcanvas-header">
-    <button
-      type="button"
-      class="btn-close text-reset"
-      data-bs-dismiss="offcanvas"
-      aria-label="Close"
-    ></button>
-  </div>
-
-  <div class="offcanvas-body d-flex flex-column align-items-center text-center">
-    <img
-      *ngIf="selectedCareer?.image"
-      [src]="selectedCareer.image"
-      [alt]="selectedCareer.title"
-      class="img-fluid rounded mb-3"
-      style="max-height: 200px; object-fit: cover; width: 100%"
-    />
-    <h5 class="offcanvas-title" id="careerOffcanvasLabel">
-      {{ selectedCareer?.title }}
-    </h5>
-    <p class="fs-6 text-secondary">{{ selectedCareer?.description }}</p>
-  </div>
+  <hr />
 </div>

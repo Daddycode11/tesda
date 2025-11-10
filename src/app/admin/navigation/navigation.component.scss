@@ -1,12 +1,42 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Roboto:wght@400;500&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Roboto:wght@400;500&display=swap");
+
+/* Layout wrapper */
+.layout {
+  display: flex;
+  height: 100dvh;
+}
 
 /* Sidebar */
 .sidebar {
+  height: 100dvh;
+  overflow: hidden;
   width: 260px;
+  background-color: white;
+  border-right: 1px solid #dee2e6;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
   transition: all 0.3s ease;
+  nav {
+    flex-grow: 1;
+    overflow-y: auto; /* Independent scrollbar */
+    scrollbar-width: thin;
+    scrollbar-color: #888 #eaeaea;
+  }
 }
 
-/* Links */
+/* Main content */
+.main-content {
+  flex-grow: 1;
+  background-color: #f8f9fa;
+  max-width: calc(100% - 260px);
+
+  overflow-y: auto; /* Independent scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: #888 #eaeaea;
+}
+
+/* Hover links */
 .hover-link {
   transition: background-color 0.2s ease;
 }
@@ -18,7 +48,6 @@
   background-color: #007bff;
   color: white !important;
 }
-
 .active-link i {
   color: white !important;
 }
@@ -27,7 +56,7 @@
   color: #007bff !important;
 }
 
-/* Responsive */
+/* Responsive Sidebar */
 @media (max-width: 768px) {
   .sidebar {
     position: fixed;
@@ -41,7 +70,7 @@
   }
 }
 
-/* Optional toggle button for mobile */
+/* Mobile toggle */
 .toggle-btn {
   position: fixed;
   top: 15px;

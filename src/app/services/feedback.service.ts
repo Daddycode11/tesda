@@ -12,10 +12,12 @@ import {
   query,
   setDoc,
   where,
+  writeBatch,
 } from '@angular/fire/firestore';
 
 import { UserConverter } from '../models/Users';
 import { Auth } from '@angular/fire/auth';
+import { SAMPLE_FEEDBACKS } from '../utils/Constants';
 
 @Injectable({
   providedIn: 'root',
@@ -92,5 +94,23 @@ export class FeedbackService {
       orderBy('submittedAt', 'desc')
     );
     return collectionData(feedbackRef);
+  }
+  addAll(feedback: Feedback[] = SAMPLE_FEEDBACKS) {
+    const batch = writeBatch(this.firestore);
+
+    feedback.forEach((e) => {
+      const docRef = doc(this.firestore, 'feedbacks', e.id);
+      batch.set(docRef, {
+        name: e.name,
+        profile: e.profile || null,
+        uid: e.uid,
+        sentiment: e.sentiment,
+        comment: e.comment || '',
+        allowFollowUp: e.allowFollowUp,
+        submittedAt: e.submittedAt,
+      });
+    });
+
+    return batch.commit();
   }
 }

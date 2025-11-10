@@ -173,6 +173,12 @@
     <button
       class="btn btn-outline-primary mt-4"
       [routerLink]="['/landing-page/services']"
+      [queryParams]="{
+        type: 'All Services',
+        page: 1,
+        size: 10,
+        search: ''
+      }"
     >
       See more
     </button>

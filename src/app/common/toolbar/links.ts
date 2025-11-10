@@ -2,6 +2,7 @@
 export interface MenuItem {
   url: string;
   label: string;
+  queryParams?: { [key: string]: any };
 }
 
 // Define the structure for dropdown categories
@@ -9,57 +10,166 @@ export interface Dropdowns {
   [category: string]: MenuItem[];
 }
 
-// Define the structure for verification links (simple array)
+// Define the structure for verification links
 export type VerificationLinks = MenuItem[];
-// Dropdown data
+
+// Dropdown data with full queryParams for Programs & Services
 export const dropdowns: Dropdowns = {
-  "About Us": [
-    { url: "/landing-page/history", label: "History" },
-    { url: "/landing-page/mission-vision", label: "Mission, Vision, Value & Quality Statement" },
-    { url: "/landing-page/core-business", label: "Core Business" },
-    { url: "https://www.tesda.gov.ph/AboutL/TESDA/1280", label: "Road Map" },
-    { url: "/landing-page/calendar-events", label: "Activities & Events" },
-    { url: "/landing-page/structure", label: "Organizational Structure (Provincial Office Staffs)" },
-    { url: "/landing-page/careers", label: "Careers" },
-    { url: "/landing-page/pds-corner", label: "PD’s Corner" },
+  'About Us': [
+    { url: '/landing-page/history', label: 'HISTORY' },
+    {
+      url: '/landing-page/mission-vision',
+      label: 'MISSION, VISION, VALUE & QUALITY STATEMENT',
+    },
+    { url: '/landing-page/core-business', label: 'CORE BUSINESS' },
+    { url: 'https://www.tesda.gov.ph/AboutL/TESDA/1280', label: 'ROAD MAP' },
+    { url: '/landing-page/calendar-events', label: 'ACTIVITIES & EVENTS' },
+    {
+      url: '/landing-page/structure',
+      label: 'ORGANIZATIONAL STRUCTURE (PROVINCIAL OFFICE STAFFS)',
+    },
+    { url: '/landing-page/careers', label: 'CAREERS' },
+    { url: '/landing-page/pds-corner', label: 'PD’S CORNER' },
   ],
-  "Programs & Services": [
-    { url: "/landing-page/programs-services", label: "TVET Programs" },
-    { url: "/landing-page/competency-standards", label: "Competency Standards Development" },
-    { url: "/landing-page/competency-assessment-certification", label: "Competency Assessment and Certification" },
-    { url: "/landing-page/program-registration-accreditation", label: "Program Registration and Accreditation" },
-    { url: "/landing-page/directory-schools", label: "Directory of Schools with Registered Programs" },
-    { url: "/landing-page/directory-trainers", label: "Directory of Accredited TVET Trainers" },
-    { url: "/landing-page/training-regulations", label: "Training Regulations" },
-    { url: "/landing-page/competency-standards", label: "Competency Standards" },
+  'Programs & Services': [
+    {
+      url: '/landing-page/services',
+      label: 'TVET PROGRAMS',
+      queryParams: { type: 'TVET_PROGRAMS', page: 1, size: 10, search: '' },
+    },
+    {
+      url: '/landing-page/services',
+      label: 'COMPETENCY STANDARDS DEVELOPMENT',
+      queryParams: {
+        type: 'COMPETENCY_STANDARDS_DEVELOPMENT',
+        page: 1,
+        size: 10,
+        search: '',
+      },
+    },
+    {
+      url: '/landing-page/services',
+      label: 'COMPETENCY ASSESSMENT AND CERTIFICATION',
+      queryParams: {
+        type: 'COMPETENCY_ASSESSMENT_AND_CERTIFICATION',
+        page: 1,
+        size: 10,
+        search: '',
+      },
+    },
+    {
+      url: '/landing-page/services',
+      label: 'PROGRAM REGISTRATION AND ACCREDITATION',
+      queryParams: {
+        type: 'PROGRAM_REGISTRATION_AND_ACCREDITATION',
+        page: 1,
+        size: 10,
+        search: '',
+      },
+    },
+    {
+      url: '/landing-page/services',
+      label: 'DIRECTORY OF SCHOOLS WITH REGISTERED PROGRAMS',
+      queryParams: {
+        type: 'DIRECTORY_OF_SCHOOLS_WITH_REGISTERED_PROGRAMS',
+        page: 1,
+        size: 10,
+        search: '',
+      },
+    },
+    {
+      url: '/landing-page/services',
+      label: 'DIRECTORY OF ACCREDITED TVET TRAINERS',
+      queryParams: {
+        type: 'DIRECTORY_OF_ACCREDITED_TVET_TRAINERS',
+        page: 1,
+        size: 10,
+        search: '',
+      },
+    },
+    {
+      url: '/landing-page/services',
+      label: 'TRAINING REGULATIONS',
+      queryParams: {
+        type: 'TRAINING_REGULATIONS',
+        page: 1,
+        size: 10,
+        search: '',
+      },
+    },
+    {
+      url: '/landing-page/services',
+      label: 'COMPETENCY STANDARDS',
+      queryParams: {
+        type: 'COMPETENCY_STANDARDS',
+        page: 1,
+        size: 10,
+        search: '',
+      },
+    },
   ],
-  "Transparency": [
-    { url: "/landing-page/transparency-seal", label: "Transparency Seal" },
-    { url: "/landing-page/citizens-charter", label: "Citizen’s Charter" },
-    { url: "/landing-page/freedom-of-information", label: "Freedom of Information" },
-    { url: "https://pqf.gov.ph/", label: "Philippine Qualifications Framework" },
-    { url: "/landing-page/bagong-pilipinas", label: "Bagong Pilipinas" },
+  Transparency: [
+    { url: '/landing-page/transparency-seal', label: 'TRANSPARENCY SEAL' },
+    { url: '/landing-page/citizens-charter', label: 'CITIZEN’S CHARTER' },
+    { url: '/landing-page/philgeps-posting', label: 'PHILGEPS POSTINGS' },
+    {
+      url: '/landing-page/freedom-of-information',
+      label: 'FREEDOM OF INFORMATION',
+    },
+    {
+      url: 'https://pqf.gov.ph/',
+      label: 'PHILIPPINE QUALIFICATIONS FRAMEWORK',
+    },
+    { url: '/landing-page/bagong-pilipinas', label: 'BAGONG PILIPINAS' },
   ],
-  "Resources": [
-    { url: "https://www.tesda.gov.ph/About/TESDA/21992", label: "TESDA Circulars (Memo, Resolutions, Advisories, Orders)" },
-    { url: "/landing-page/downloadable-files", label: "Downloadable Files (Forms and other files available for downloading)" },
+  Resources: [
+    {
+      url: 'https://www.tesda.gov.ph/About/TESDA/21992',
+      label: 'TESDA CIRCULARS (MEMO, RESOLUTIONS, ADVISORIES, ORDERS)',
+    },
+    {
+      url: '/landing-page/downloadable-files',
+      label:
+        'DOWNLOADABLE FILES (FORMS AND OTHER FILES AVAILABLE FOR DOWNLOADING)',
+    },
   ],
-  "Contacts": [
-    { url: "/landing-page/contacts/central-office", label: "Central Office" },
-    { url: "/landing-page/contacts/regional-office", label: "Regional Office" },
-    { url: "/landing-page/contacts/occidental-mindoro-tti", label: "Occidental Mindoro TESDA Training Institute" },
-    { url: "/landing-page/contacts/ttis", label: "TTIs" },
-    { url: "/landing-page/contacts/tvis", label: "TVIs" },
-    { url: "/landing-page/contacts/board-members", label: "Board Members" },
+  Contacts: [
+    { url: '/landing-page/contacts/central-office', label: 'CENTRAL OFFICE' },
+    { url: '/landing-page/contacts/regional-office', label: 'REGIONAL OFFICE' },
+    {
+      url: '/landing-page/contacts/occidental-mindoro-tti',
+      label: 'OCCIDENTAL MINDORO TESDA TRAINING INSTITUTE',
+    },
+    { url: '/landing-page/contacts/ttis', label: 'TTIS' },
+    { url: '/landing-page/contacts/tvis', label: 'TVIS' },
+    { url: '/landing-page/contacts/board-members', label: 'BOARD MEMBERS' },
   ],
 };
 
-// Verification links
+// Verification links remain unchanged
 export const verificationLinks: VerificationLinks = [
-  { url: "https://www.tesda.gov.ph/Rwac/Rwac2017", label: "Registry of Certified Workers" },
-  { url: "https://www.tesda.gov.ph/AssessmentCenters/", label: "Assessment Centers" },
-  { url: "https://www.tesda.gov.ph/TVI", label: "TVI with Registered Programs" },
-  { url: "https://www.tesda.gov.ph/About/TESDA/27876", label: "Institutions Issued with Cease and Desist Order" },
-  { url: "https://www.tesda.gov.ph/CA", label: "Registry of Accredited Assessors" },
-  { url: "https://www.tesda.gov.ph/NTTC", label: "Registry of Trainers with NTTC" },
+  {
+    url: 'https://www.tesda.gov.ph/Rwac/Rwac2017',
+    label: 'REGISTRY OF CERTIFIED WORKERS',
+  },
+  {
+    url: 'https://www.tesda.gov.ph/AssessmentCenters/',
+    label: 'ASSESSMENT CENTERS',
+  },
+  {
+    url: 'https://www.tesda.gov.ph/TVI',
+    label: 'TVI WITH REGISTERED PROGRAMS',
+  },
+  {
+    url: 'https://www.tesda.gov.ph/About/TESDA/27876',
+    label: 'INSTITUTIONS ISSUED WITH CEASE AND DESIST ORDER',
+  },
+  {
+    url: 'https://www.tesda.gov.ph/CA',
+    label: 'REGISTRY OF ACCREDITED ASSESSORS',
+  },
+  {
+    url: 'https://www.tesda.gov.ph/NTTC',
+    label: 'REGISTRY OF TRAINERS WITH NTTC',
+  },
 ];

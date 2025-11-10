@@ -7,7 +7,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AddCareersComponent } from '../dialogs/add-careers/add-careers.component';
-
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-admin-careers',
   standalone: true,

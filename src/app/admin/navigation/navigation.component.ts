@@ -37,6 +37,11 @@ export class NavigationComponent {
   navItems: NavItems[] = [
     { label: 'Dashboard', route: 'dashboard', icon: 'bi bi-house' },
     {
+      label: 'Appointments',
+      icon: 'bi bi-calendar-check-fill',
+      route: 'appointments',
+    },
+    {
       label: 'Messages',
       icon: 'bi bi-chat-left-text-fill',
       route: 'messages',
@@ -63,26 +68,6 @@ export class NavigationComponent {
       label: 'Services',
       route: 'services',
       icon: 'bi bi-grid',
-
-      more: [
-        { label: 'Add Service', route: 'create-service' },
-        {
-          label: 'All Services',
-          route: 'services',
-          queryParams: { type: 'Services' },
-        },
-        {
-          label: 'Programs & Services',
-          route: 'services',
-          queryParams: { type: 'Programs & Services' },
-        },
-        {
-          label: 'Other Services',
-          route: 'services',
-          queryParams: { type: 'Other Services' },
-        },
-        { label: 'Requirements', route: 'requirements' },
-      ],
     },
     {
       label: 'Announcements',
@@ -108,7 +93,12 @@ export class NavigationComponent {
     {
       label: 'Feedback',
       icon: '',
-      route: 'feedbacks',
+      route: 'feedback',
+    },
+    {
+      label: 'PhilGEPS Posting',
+      icon: '',
+      route: 'philgeps-posting',
     },
   ];
 

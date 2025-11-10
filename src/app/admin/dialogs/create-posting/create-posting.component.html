@@ -1,0 +1,115 @@
+<form [formGroup]="postingForm" (ngSubmit)="submit()">
+  <div class="modal-header">
+    <h4 class="modal-title">
+      {{ post === null ? "Create Posting" : "Edit Posting" }}
+    </h4>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="closeModal()"
+    ></button>
+  </div>
+
+  <div class="modal-body">
+    <div class="mb-3">
+      <label for="reference" class="form-label">Reference</label>
+      <input
+        type="text"
+        id="reference"
+        class="form-control"
+        formControlName="reference"
+        [class.is-invalid]="
+          postingForm.get('reference')?.invalid &&
+          postingForm.get('reference')?.touched
+        "
+      />
+      <div class="invalid-feedback">Reference is required.</div>
+    </div>
+
+    <div class="mb-3">
+      <label for="project" class="form-label">Project Name</label>
+      <input
+        type="text"
+        id="project"
+        class="form-control"
+        formControlName="project"
+        [class.is-invalid]="
+          postingForm.get('project')?.invalid &&
+          postingForm.get('project')?.touched
+        "
+      />
+      <div class="invalid-feedback">Project name is required.</div>
+    </div>
+
+    <div class="mb-3">
+      <label for="budget" class="form-label">Budget</label>
+      <input
+        type="number"
+        id="budget"
+        class="form-control"
+        formControlName="budget"
+        [class.is-invalid]="
+          postingForm.get('budget')?.invalid &&
+          postingForm.get('budget')?.touched
+        "
+      />
+      <div class="invalid-feedback">Budget is required.</div>
+    </div>
+
+    <div class="mb-3">
+      <label for="contractor" class="form-label">Contractor</label>
+      <input
+        type="text"
+        id="contractor"
+        class="form-control"
+        formControlName="contractor"
+        [class.is-invalid]="
+          postingForm.get('contractor')?.invalid &&
+          postingForm.get('contractor')?.touched
+        "
+      />
+      <div class="invalid-feedback">Contractor is required.</div>
+    </div>
+
+    <div class="mb-3">
+      <label for="jobOrder" class="form-label">Job Order</label>
+      <input
+        type="text"
+        id="jobOrder"
+        class="form-control"
+        formControlName="jobOrder"
+        [class.is-invalid]="
+          postingForm.get('jobOrder')?.invalid &&
+          postingForm.get('jobOrder')?.touched
+        "
+      />
+      <div class="invalid-feedback">Job order is required.</div>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-outline-secondary"
+      (click)="closeModal()"
+      [disabled]="isLoading"
+    >
+      Close
+    </button>
+
+    <button
+      type="submit"
+      class="btn btn-primary"
+      [disabled]="postingForm.invalid || isLoading"
+    >
+      <span
+        *ngIf="isLoading"
+        class="spinner-border spinner-border-sm me-2"
+        role="status"
+        aria-hidden="true"
+      ></span>
+      {{ post === null ? "Create" : "Update" }}
+    </button>
+  </div>
+</form>

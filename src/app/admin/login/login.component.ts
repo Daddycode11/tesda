@@ -11,7 +11,7 @@ import { AuthService } from '../../services/auth.service';
 import { UserType } from '../../models/Users';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -22,9 +22,9 @@ import { CommonModule } from '@angular/common';
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   loading$ = false;
+
   constructor(
     private fb: FormBuilder,
-    private toastr: ToastrService,
     private authService: AuthService,
     private router: Router
   ) {
@@ -33,9 +33,11 @@ export class LoginComponent implements OnInit {
       password: ['', Validators.required],
     });
   }
+
   ngOnInit(): void {
     this.initUser();
   }
+
   initUser() {
     this.loading$ = true;
     this.authService.getUser().then((data) => {
@@ -46,26 +48,29 @@ export class LoginComponent implements OnInit {
       }
     });
   }
+
   submit() {
     if (this.loginForm.invalid) {
-      this.toastr.showError('Invalid Form');
+      Swal.fire('Error', 'Invalid Form', 'error');
       return;
     }
+
     this.loading$ = true;
     const { email, password } = this.loginForm.value;
+
     this.authService
       .loginWithEmailAndPassword(email, password)
       .then((data) => {
         if (data.type === UserType.ADMIN) {
-          this.toastr.showSuccess('Successfully Login!');
+          Swal.fire('Success', 'Successfully Login!', 'success');
           this.router.navigate(['/administration/main']);
         } else {
-          this.toastr.showError('Invalid User');
+          Swal.fire('Error', 'Invalid User', 'error');
           this.authService.logout();
         }
       })
       .catch((e) => {
-        this.toastr.showError(e['message'] ?? 'Unknown Error');
+        Swal.fire('Error', e['message'] ?? 'Unknown Error', 'error');
       })
       .finally(() => (this.loading$ = false));
   }

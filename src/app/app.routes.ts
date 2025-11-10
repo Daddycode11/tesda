@@ -10,7 +10,7 @@ import { AdminDashboardComponent } from './admin/admin-dashboard/admin-dashboard
 import { AdminBannersComponent } from './admin/admin-banners/admin-banners.component';
 import { AdminCareersComponent } from './admin/admin-careers/admin-careers.component';
 import { AdminRequirementsComponent } from './admin/admin-requirements/admin-requirements.component';
-import { AdminServicesComponent } from './admin/admin-services/admin-services.component';
+
 import { CreateServiceComponent } from './admin/admin-services/create-service/create-service.component';
 import { HomeComponent } from './common/toolbar/home/home.component';
 import { HistoryComponent } from './common/toolbar/history/history.component';
@@ -28,6 +28,11 @@ import { UserMessagesComponent } from './user/user-messages/user-messages.compon
 import { ServicesListComponent } from './common/services-list/services-list.component';
 import { AnnounementListComponent } from './common/announement-list/announement-list.component';
 import { ViewAnnouncementComponent } from './common/view-announcement/view-announcement.component';
+import { AdminFeedbackComponent } from './admin/admin-feedback/admin-feedback.component';
+import { AdminAppointmentComponent } from './admin/admin-appointment/admin-appointment.component';
+import { AdminPhilgepsPostingComponent } from './admin/admin-philgeps-posting/admin-philgeps-posting.component';
+import { PhilGepsListComponent } from './user/phil-geps-list/phil-geps-list.component';
+import { AdminServicesComponent } from './admin/admin-services/admin-services.component';
 
 export const routes: Routes = [
   {
@@ -78,6 +83,10 @@ export const routes: Routes = [
         path: 'careers',
         component: CareersComponent,
       },
+      {
+        path: 'philgeps-posting',
+        component: PhilGepsListComponent,
+      },
     ],
   },
   {
@@ -127,6 +136,10 @@ export const routes: Routes = [
             component: AdminDashboardComponent,
           },
           {
+            path: 'appointments',
+            component: AdminAppointmentComponent,
+          },
+          {
             path: 'messages',
             component: MessagingComponent,
           },
@@ -165,6 +178,14 @@ export const routes: Routes = [
           {
             path: 'activities',
             component: AdminActivitiesComponent,
+          },
+          {
+            path: 'feedback',
+            component: AdminFeedbackComponent,
+          },
+          {
+            path: 'philgeps-posting',
+            component: AdminPhilgepsPostingComponent,
           },
         ],
       },

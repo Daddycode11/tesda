@@ -1,100 +1,122 @@
+<nav class="navbar navbar-dark bg-primary">
+  <div class="container-fluid">
+    <span class="navbar-brand mb-0 h1">
+      <button class="btn btn-light" (click)="back()">
+        <i class="bi bi-arrow-left"></i>
+      </button>
+      {{ id === null ? "Create Service" : "Update Service" }}
+    </span>
+  </div>
+</nav>
+
 <div class="container py-4">
-  <div class="card shadow-sm">
-    <div class="card-header bg-primary text-white">
-      <h5 class="mb-0">Add Service</h5>
-    </div>
-    <div class="card-body">
-      <form [formGroup]="serviceForm" (ngSubmit)="submit()">
-        <div class="row g-3">
-          <div class="col-md-6">
-            <div class="form-floating">
-              <input
-                type="text"
-                class="form-control"
-                id="title"
-                formControlName="title"
-                placeholder="Enter title"
-              />
-              <label for="title">Title</label>
-            </div>
-          </div>
+  <form [formGroup]="serviceForm" (ngSubmit)="submit()">
+    <div class="row g-3">
+      <!-- Title -->
+      <div class="col-md-6">
+        <div class="form-floating">
+          <input
+            type="text"
+            class="form-control"
+            id="title"
+            formControlName="title"
+            placeholder="Enter title"
+          />
+          <label for="title">Title</label>
+        </div>
+      </div>
 
-          <div class="col-md-6">
-            <div class="form-floating">
-              <select class="form-select" id="type" formControlName="type">
-                <option *ngFor="let type of serviceTypes" [value]="type">
-                  {{ type }}
-                </option>
-              </select>
-              <label for="type">Type</label>
-            </div>
-          </div>
+      <!-- Type -->
+      <div class="col-md-6">
+        <div class="form-floating">
+          <select class="form-select" id="type" formControlName="type">
+            <option *ngFor="let type of serviceTypes" [value]="type">
+              {{ type }}
+            </option>
+          </select>
+          <label for="type">Type</label>
+        </div>
+      </div>
 
-          <div class="col-12">
-            <div class="form-floating">
-              <textarea
-                class="form-control"
-                id="description"
-                formControlName="description"
-                placeholder="Enter description"
-                style="height: 120px"
-              ></textarea>
-              <label for="description">Description</label>
-            </div>
-          </div>
+      <!-- Description -->
+      <div class="col-12">
+        <div class="form-floating">
+          <textarea
+            class="form-control"
+            id="description"
+            formControlName="description"
+            placeholder="Enter description"
+            style="height: 120px"
+          ></textarea>
+          <label for="description">Description</label>
+        </div>
+      </div>
+      <!-- Icon Upload -->
+      <div class="col-md-12">
+        <div class="form-floating">
+          <input
+            type="file"
+            class="form-control"
+            id="icon"
+            (change)="onIconSelected($event)"
+            accept=".pdf,.doc,.docx"
+          />
+          <label for="icon" class="form-label">Upload File</label>
+        </div>
+      </div>
 
-          <div class="col-md-6">
-            <div class="form-floating">
-              <input
-                type="file"
-                class="form-control"
-                id="icon"
-                (change)="onIconSelected($event)"
-                accept="image/*"
-              />
-              <label for="icon" class="form-label">Upload Icon</label>
-            </div>
-            <div *ngIf="selectedIcon" class="mt-2">
-              <img
-                [src]="iconPreviewUrl"
-                alt="Icon preview"
-                class="img-thumbnail"
-                style="max-height: 100px"
-              />
-            </div>
-          </div>
+      <!-- ✅ Requirements Section -->
+      <div class="col-12">
+        <label class="form-label fw-semibold mb-2">Requirements</label>
 
-          <div class="col-md-6">
-            <div class="form-floating">
-              <input
-                type="url"
-                class="form-control"
-                id="link"
-                formControlName="link"
-                placeholder="Enter title"
-              />
-              <label for="link">Service URL</label>
-            </div>
-          </div>
-
-          <div class="col-12">
+        <div formArrayName="requirements">
+          <div
+            *ngFor="let req of requirements.controls; let i = index"
+            class="input-group mb-2"
+          >
+            <input
+              type="text"
+              class="form-control"
+              [formControlName]="i"
+              placeholder="Enter requirement"
+            />
             <button
-              class="btn btn-primary w-100"
-              type="submit"
-              [disabled]="isLoading || serviceForm.invalid"
+              type="button"
+              class="btn btn-outline-danger"
+              (click)="removeRequirement(i)"
+              [disabled]="requirements.length === 1"
             >
-              <ng-container *ngIf="isLoading; else saveText">
-                <span
-                  class="spinner-border spinner-border-sm me-2"
-                  role="status"
-                ></span>
-                Saving...
-              </ng-container>
-              <ng-template #saveText>Save Service</ng-template>
+              <i class="bi bi-x"></i>
             </button>
           </div>
         </div>
-      </form>
+
+        <button
+          type="button"
+          class="btn btn-outline-primary btn-sm mt-2"
+          (click)="addRequirement()"
+        >
+          <i class="bi bi-plus"></i> Add Requirement
+        </button>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="col-12">
+        <button
+          class="btn btn-primary w-100"
+          type="submit"
+          [disabled]="isLoading || serviceForm.invalid"
+        >
+          <ng-container *ngIf="isLoading; else saveText">
+            <span
+              class="spinner-border spinner-border-sm me-2"
+              role="status"
+            ></span>
+            Saving...
+          </ng-container>
+          <ng-template #saveText>Save Service</ng-template>
+        </button>
+      </div>
     </div>
-  </div>
+  </form>
 </div>

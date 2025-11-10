@@ -11,7 +11,7 @@ import {
 import { ToastrService } from '../../../services/toastr.service';
 import { CommonModule } from '@angular/common';
 import { Career } from '../../../models/Careeer';
-
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-add-careers',
   standalone: true,
@@ -27,11 +27,7 @@ export class AddCareersComponent implements OnInit {
 
   @Input() career: Career | null = null;
 
-  constructor(
-    private fb: FormBuilder,
-    private toastr: ToastrService,
-    private careerService: CareerService
-  ) {
+  constructor(private fb: FormBuilder, private careerService: CareerService) {
     this.careerForm = fb.nonNullable.group({
       title: ['', Validators.required],
       description: ['', Validators.maxLength(300)],
@@ -49,7 +45,7 @@ export class AddCareersComponent implements OnInit {
 
   submit() {
     if (this.careerForm.invalid) {
-      this.toastr.showError('Invalid Form');
+      Swal.fire('Error', 'Invalid Form', 'error');
       return;
     }
 
@@ -60,7 +56,7 @@ export class AddCareersComponent implements OnInit {
       this.update(title, description, this.selectedImage);
     } else {
       if (this.selectedImage == null) {
-        this.toastr.showWarning('Please Add Image');
+        Swal.fire('Warning', 'Please Add Image', 'warning');
         this.isLoading = false;
         return;
       }
@@ -70,7 +66,7 @@ export class AddCareersComponent implements OnInit {
 
   update(title: string, description: string, selectedImage: File | null) {
     if (!this.career) {
-      this.toastr.showError('No career selected for update');
+      Swal.fire('Error', 'No career selected for update', 'error');
       this.isLoading = false;
       return;
     }
@@ -83,12 +79,12 @@ export class AddCareersComponent implements OnInit {
 
     this.careerService.update(updatedCareer, selectedImage).subscribe({
       next: () => {
-        this.toastr.showSuccess('Career updated successfully');
+        Swal.fire('Success', 'Career updated successfully', 'success');
         this.activeDialog.close(true);
       },
       error: (err) => {
         console.error('Career update failed:', err);
-        this.toastr.showError('Failed to update career');
+        Swal.fire('Error', 'Failed to update career', 'error');
       },
       complete: () => {
         this.isLoading = false;
@@ -99,12 +95,13 @@ export class AddCareersComponent implements OnInit {
   create(title: string, description: string, image: File) {
     this.careerService.create(title, description, image).subscribe({
       next: () => {
-        this.toastr.showSuccess('Career added successfully');
+        Swal.fire('Success', 'Career added successfully', 'success');
         this.activeDialog.close(true);
       },
       error: (err) => {
+        this.isLoading = false;
         console.error('Career creation failed:', err);
-        this.toastr.showError('Failed to add career');
+        Swal.fire('Error', 'Failed to add career', err['message']);
       },
       complete: () => {
         this.isLoading = false;

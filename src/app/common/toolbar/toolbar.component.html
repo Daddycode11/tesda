@@ -1,7 +1,12 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark text-light">
   <div class="container-fluid">
     <div class="d-flex align-items-center">
-      <img src="../../../assets/images/logo.png" height="40" alt="Logo" class="me-2" />
+      <img
+        src="../../../assets/images/logo.png"
+        height="40"
+        alt="Logo"
+        class="me-2"
+      />
       <div class="text-light text-center">
         <h4 class="mb-0 fw-bold">TESDA</h4>
         <span class="small text-white-50">Occidental Mindoro</span>
@@ -20,9 +25,11 @@
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
+    <div
+      class="collapse navbar-collapse justify-content-center"
+      id="navbarSupportedContent"
+    >
       <ul class="navbar-nav mb-2 mb-lg-0 gap-3 text-center">
-
         <li class="nav-item">
           <a class="nav-link active" [routerLink]="['/landing-page', 'home']">
             <i class="fa-solid fa-house me-1"></i> Home
@@ -30,12 +37,20 @@
         </li>
 
         <!-- Dynamic Dropdowns -->
-        <li class="nav-item dropdown" *ngFor="let group of dropdowns$ | keyvalue">
-          <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown">
+        <li
+          class="nav-item dropdown"
+          *ngFor="let group of dropdowns$ | keyvalue"
+        >
+          <a
+            class="nav-link dropdown-toggle"
+            role="button"
+            data-bs-toggle="dropdown"
+          >
             {{ group.key }}
           </a>
           <ul class="dropdown-menu shadow-sm border-0 rounded-3">
             <li *ngFor="let item of group.value">
+              <!-- External link -->
               <a
                 *ngIf="item.url.startsWith('http')"
                 class="dropdown-item"
@@ -45,10 +60,13 @@
               >
                 {{ item.label }}
               </a>
+
+              <!-- Internal link with optional query params -->
               <a
                 *ngIf="!item.url.startsWith('http')"
                 class="dropdown-item"
                 [routerLink]="[item.url]"
+                [queryParams]="item.queryParams"
               >
                 {{ item.label }}
               </a>
@@ -58,12 +76,18 @@
 
         <!-- Verification Dropdown -->
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown">
+          <a
+            class="nav-link dropdown-toggle"
+            role="button"
+            data-bs-toggle="dropdown"
+          >
             <i class="fa-solid fa-id-card me-1"></i> Verification
           </a>
           <ul class="dropdown-menu shadow-sm border-0 rounded-3">
             <li *ngFor="let link of verificationLinks$">
-              <a class="dropdown-item" [href]="link.url" target="_blank">{{ link.label }}</a>
+              <a class="dropdown-item" [href]="link.url" target="_blank">{{
+                link.label
+              }}</a>
             </li>
           </ul>
         </li>
@@ -71,7 +95,10 @@
 
       <!-- Auth Section -->
       <div *ngIf="!user" class="d-flex mt-2 mt-lg-0 gap-2" role="login">
-        <button class="btn btn-outline-light btn-sm px-3" (click)="registerClicked()">
+        <button
+          class="btn btn-outline-light btn-sm px-3"
+          (click)="registerClicked()"
+        >
           <i class="fa-solid fa-user-plus me-1"></i> Register
         </button>
         <button class="btn btn-primary btn-sm px-3" (click)="loginClicked()">
@@ -81,20 +108,37 @@
 
       <ul *ngIf="user" class="navbar-nav ms-auto mb-2 mb-lg-0">
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown">
-            <img [src]="user.profile || '../../../assets/images/profile.png'" class="rounded-circle me-2" width="40" height="40" />
-            <span>{{ user.name || 'Account' }}</span>
+          <a
+            class="nav-link dropdown-toggle d-flex align-items-center"
+            data-bs-toggle="dropdown"
+          >
+            <img
+              [src]="user.profile || '../../../assets/images/profile.png'"
+              class="rounded-circle me-2"
+              width="40"
+              height="40"
+            />
+            <span>{{ user.name || "Account" }}</span>
           </a>
           <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-3">
             <li>
               <a class="dropdown-item" (click)="navigate(user.type)">
-                <i class="fa-solid fa-gauge-high me-2 text-primary"></i> Dashboard
+                <i class="fa-solid fa-gauge-high me-2 text-primary"></i>
+                Dashboard
               </a>
             </li>
             <li>
-              <a class="dropdown-item d-flex justify-content-between align-items-center">
-                <span><i class="fa-solid fa-envelope me-2 text-secondary"></i> Messages</span>
-                <span *ngIf="unseenMessagesCount > 0" class="badge bg-danger rounded-pill">
+              <a
+                class="dropdown-item d-flex justify-content-between align-items-center"
+              >
+                <span
+                  ><i class="fa-solid fa-envelope me-2 text-secondary"></i>
+                  Messages</span
+                >
+                <span
+                  *ngIf="unseenMessagesCount > 0"
+                  class="badge bg-danger rounded-pill"
+                >
                   {{ unseenMessagesCount }}
                 </span>
               </a>

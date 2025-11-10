@@ -11,6 +11,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from '../../services/auth.service';
 import { UserType } from '../../models/Users';
 import Swal from 'sweetalert2';
+import { ToastrService } from '../../services/toastr.service';
 
 @Component({
   selector: 'app-login-dialog',
@@ -24,7 +25,11 @@ export class LoginDialogComponent {
   loginForm: FormGroup;
   loading$ = false;
 
-  constructor(private fb: FormBuilder, private authService: AuthService) {
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private toastr: ToastrService
+  ) {
     this.loginForm = fb.nonNullable.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
@@ -53,6 +58,7 @@ export class LoginDialogComponent {
         if (data.type === UserType.ADMIN) {
           this.authService.logout();
           this.toastr.showError('Admin Cannot Logged in here');
+          this.activeModal.close(data);
         } else {
           this.toastr.showSuccess('Successfully Logged in!');
 
@@ -61,7 +67,7 @@ export class LoginDialogComponent {
       })
       .catch((e) => {
         this.toastr.showError(e['message'] ?? 'Unknown Error');
-        this.activeModal.close(false);
+
         this.loading$ = false;
       });
   }
@@ -76,9 +82,8 @@ export class LoginDialogComponent {
         if (data.type === UserType.ADMIN) {
           this.activeModal.close(true);
         } else {
-          false;
+          this.activeModal.close(data.id);
         }
-        this.activeModal.close(false);
       })
       .catch((e) => {
         this.toastr.showError(e['message'] ?? 'Unknown Error');
